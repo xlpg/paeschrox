@@ -121,7 +121,11 @@ function todayWeek(){const s=startDate();if(!s)return 0;const n=Math.floor((new 
 
 // ---------- Hilfen ----------
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const FL={kg:["Gewicht (kg)","decimal","z. B. 60"],reps:["Wdh.","text","5/5/5/5/3+2"],time:["Zeit","text","mm:ss"],kmh:["km/h","decimal","z. B. 10,5"]};
+const FL={kg:["Gewicht (kg)","decimal","z. B. 60"],reps:["Wdh.","numeric","55555"],time:["Zeit","text","mm:ss"],kmh:["km/h","decimal","z. B. 10,5"]};
+const FL_MULTI=["Wdh.","decimal","10,8,7"];   // Sätze mit mehrstelligen Wdh. (Pull-ups): Komma trennt
+// Wdh. automatisch trennen: normal ist jede Ziffer ein Satz (55555 → 5/5/5/5/5),
+// bei multi trennt jedes Nicht-Ziffer-Zeichen (10,8,7 → 10/8/7)
+function fmtReps(v,multi){return multi?v.replace(/\D+/g,"/").replace(/^\//,""):v.replace(/\D/g,"").split("").join("/")}
 function nDone(s){const d=DATA[s.id];if(!d)return 0;return s.steps.filter((x,i)=>d.steps[i]&&d.steps[i].d).length}
 function nReq(s){return s.steps.filter(x=>!x.opt).length}
 function isDone(s){const d=DATA[s.id];if(d&&d.finished)return true;const r=nReq(s);return r>0&&s.steps.every((x,i)=>x.opt||(d&&d.steps[i]&&d.steps[i].d))}
@@ -208,7 +212,7 @@ function renderSession(){
       const last=lastFor(x.key,si,x.f);
       h+=`<div class="sbody">`;
       if(last)h+=`<div class="last">Letztes Mal (W${last.n} ${DAYN[last.d].slice(0,2)}): <b>${esc(last.t)}</b></div>`;
-      if(x.f.length)h+=`<div class="fields">${x.f.map(k=>`<label>${FL[k][0]}<input id="f-${s.id}-${i}-${k}" data-f="${k}" data-i="${i}" inputmode="${FL[k][1]}" placeholder="${FL[k][2]}" value="${esc(v[k]||"")}" autocomplete="off"></label>`).join("")}</div>`;
+      if(x.f.length)h+=`<div class="fields">${x.f.map(k=>{const [lab,im,ph]=k==="reps"&&x.multi?FL_MULTI:FL[k];return `<label>${lab}<input id="f-${s.id}-${i}-${k}" data-f="${k}" data-i="${i}" inputmode="${im}" placeholder="${ph}" value="${esc(v[k]||"")}" autocomplete="off"></label>`}).join("")}</div>`;
       h+=ok?`<button type="button" class="undo" data-undo="${i}">Wieder öffnen</button>`:`<button type="button" class="okbtn" data-ok="${i}">Erledigt ✓</button>`;
       h+=`</div>`;
     }
@@ -266,7 +270,10 @@ app.addEventListener("click",e=>{
 app.addEventListener("input",e=>{
   const s=SESS.find(x=>x.id===view.sid);if(!s)return;
   const t=e.target;
-  if(t.dataset.f){stepData(s.id,+t.dataset.i)[t.dataset.f]=t.value.trim();persist(s.id,900)}
+  if(t.dataset.f){
+    const i=+t.dataset.i;
+    if(t.dataset.f==="reps"){const f=fmtReps(t.value,s.steps[i].multi);if(f!==t.value)t.value=f}
+    stepData(s.id,i)[t.dataset.f]=t.value.trim().replace(/\/$/,"");persist(s.id,900)}
   else if(t.dataset.note){sess(s.id).note=t.value;persist(s.id,1200)}
 });
 app.addEventListener("change",e=>{

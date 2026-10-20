@@ -71,7 +71,7 @@ function oldMoKeys(w){
   return k.concat(["brustpresse","ruderzug","latzug","military","bauchruecken","sledpush","sledpull","bizeps","trizeps"]);
 }
 // Kipping Pull-ups: Ziel = Wdh. insgesamt, Sätze frei einteilen; jede Woche +2, Entlastung weniger
-const pullups=m=>st("pullups","Kipping Pull-ups · "+m.pu+" Wdh.",m.taper?"locker, nur in Bewegung bleiben":"insgesamt, Sätze frei einteilen · sauber bleiben",["reps","time"]);
+const pullups=m=>st("pullups","Kipping Pull-ups · "+m.pu+" Wdh.",m.taper?"locker, nur in Bewegung bleiben":"insgesamt, Sätze frei einteilen · sauber bleiben",["reps","time"],{multi:true});
 function buildMi(m){
   const s=[];
   if(m.taper){
