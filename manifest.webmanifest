@@ -1,0 +1,17 @@
+{
+  "name": "Hyrox 12 Wochen",
+  "short_name": "Hyrox",
+  "description": "12-Wochen-Trainingsplan für Hyrox – offline nutzbar, Daten bleiben auf dem Handy.",
+  "lang": "de",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#15191c",
+  "theme_color": "#c4410f",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
