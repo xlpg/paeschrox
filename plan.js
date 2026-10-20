@@ -56,7 +56,7 @@ function buildMo(w){
     ex.push(["beinpresse","Kniebeugen (Langhantel)","Start bei 45–50 kg, die ersten Wochen 60–90 s Pause"]);
     ex.push(["kreuzheben","Kreuzheben (Langhantel)","Start bei 60 kg, +2,5 kg wenn alle 25 Wdh. sauber"]);
   }
-  ex.push(["brustpresse","Brustpresse"],["ruderzug","Ruderzug"],["latzug","Latzug"],["military","Schulterpresse"],["beinstrecker","Beinstrecker"],["bauch","Bauchtrainer"],["ruecken","Rückentrainer"]);
+  ex.push(["brustpresse","Brustpresse"],["ruderzug","Ruderzug"],["latzug","Latzug"],["military","Schulterpresse"],["bauch","Bauchtrainer"],["ruecken","Rückentrainer"]);
   ex.forEach(([k,n,h])=>s.push(st(k,n,sets+(h?" · "+h:""),KR)));
   s.push(st("sledpush","Sled Push",w.push,KT));
   s.push(st("sledpull","Sled Pull",w.pull,KT));

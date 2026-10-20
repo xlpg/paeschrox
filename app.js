@@ -78,6 +78,8 @@ function migrate(id){
     const v=steps[i];let key=v.k||oldKeys[+i];if(key==="bauchruecken")key="bauch";
     const j=se.steps.findIndex((x,jj)=>x.key===key&&!used.has(jj));
     if(j>=0){used.add(j);ns[j]=Object.assign({},v,{k:key})}
+    // Übung aus dem Plan entfernt: Eintrag nicht wegwerfen, sondern aufheben (landet im JSON-Export)
+    else if(summary(v,["kg","reps","time","kmh"])){const x=r.extra||(r.extra={});x[x[key]?key+"-"+i:key]=Object.assign({},v,{k:key})}
   });
   r.steps=ns;r.v=SV;r.updated=Date.now();return true;
 }
