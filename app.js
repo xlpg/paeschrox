@@ -135,7 +135,7 @@ function summary(v,f){return f.map(k=>v[k]?(k==="kg"?v[k]+" kg":k==="kmh"?v[k]+"
 function lastFor(key,beforeIdx,f){
   if(!f.length)return null;
   for(let j=beforeIdx-1;j>=0;j--){const s=SESS[j],d=DATA[s.id];if(!d)continue;
-    for(let i=s.steps.length-1;i>=0;i--){if(s.steps[i].key===key&&d.steps[i]){const t=summary(d.steps[i],f);if(t)return {t,n:s.n,d:s.d}}}}
+    for(let i=s.steps.length-1;i>=0;i--){if(s.steps[i].key===key&&d.steps[i]&&!d.steps[i].skip){const t=summary(d.steps[i],f);if(t)return {t,n:s.n,d:s.d}}}}
   return null;
 }
 function curIndex(){const i=SESS.findIndex(s=>!isDone(s));return i<0?SESS.length-1:i}
@@ -207,15 +207,15 @@ function renderSession(){
   <div class="progress"><div class="bar"><i style="width:${nDone(s)/s.steps.length*100}%"></i></div><span>${nDone(s)} / ${s.steps.length}</span></div>
   <div class="steps">`;
   s.steps.forEach((x,i)=>{
-    const v=d.steps[i]||{}, ok=!!v.d, cur=i===view.open;
-    const sum=ok?summary(v,x.f):"";
-    h+=`<div class="step ${ok?"ok":""} ${cur?"cur":""}"><button type="button" class="shead" data-step="${i}" aria-expanded="${cur}"><span class="num">${ok?"✓":i+1}</span><span class="sname"><b>${esc(x.name)}${x.opt?'<span class="opt">optional</span>':""}</b>${x.detail?`<span>${esc(x.detail)}</span>`:""}</span><span class="sval">${esc(sum)}</span></button>`;
+    const v=d.steps[i]||{}, ok=!!v.d, skip=ok&&!!v.skip, cur=i===view.open;
+    const sum=skip?"ausgelassen":ok?summary(v,x.f):"";
+    h+=`<div class="step ${skip?"skip":ok?"ok":""} ${cur?"cur":""}"><button type="button" class="shead" data-step="${i}" aria-expanded="${cur}"><span class="num">${skip?"–":ok?"✓":i+1}</span><span class="sname"><b>${esc(x.name)}${x.opt?'<span class="opt">optional</span>':""}</b>${x.detail?`<span>${esc(x.detail)}</span>`:""}</span><span class="sval">${esc(sum)}</span></button>`;
     if(cur){
       const last=lastFor(x.key,si,x.f);
       h+=`<div class="sbody">`;
       if(last)h+=`<div class="last">Letztes Mal (W${last.n} ${DAYN[last.d].slice(0,2)}): <b>${esc(last.t)}</b></div>`;
       if(x.f.length)h+=`<div class="fields">${x.f.map(k=>{const [lab,im,ph]=k==="reps"&&x.multi?FL_MULTI:FL[k];return `<label>${lab}<input id="f-${s.id}-${i}-${k}" data-f="${k}" data-i="${i}" inputmode="${im}" placeholder="${ph}" value="${esc(v[k]||"")}" autocomplete="off"></label>`}).join("")}</div>`;
-      h+=ok?`<button type="button" class="undo" data-undo="${i}">Wieder öffnen</button>`:`<button type="button" class="okbtn" data-ok="${i}">Erledigt ✓</button>`;
+      h+=ok?`<button type="button" class="undo" data-undo="${i}">Wieder öffnen</button>`:`<div class="btnrow"><button type="button" class="okbtn" data-ok="${i}">Erledigt ✓</button><button type="button" class="skipbtn" data-skip="${i}">Ausgelassen</button></div>`;
       h+=`</div>`;
     }
     h+=`</div>`;
@@ -260,13 +260,15 @@ app.addEventListener("click",e=>{
   const s=SESS.find(x=>x.id===view.sid);if(!s)return;
   const hd=e.target.closest("[data-step]");
   if(hd){const i=+hd.dataset.step;view.open=view.open===i?-1:i;renderSession();return}
-  const ok=e.target.closest("[data-ok]");
-  if(ok){const i=+ok.dataset.ok;stepData(s.id,i).d=true;stampDate(s.id);persist(s.id);
+  const ok=e.target.closest("[data-ok],[data-skip]");
+  if(ok){const skip="skip" in ok.dataset, i=+(skip?ok.dataset.skip:ok.dataset.ok), v=stepData(s.id,i);
+    v.d=true;if(skip)v.skip=true;else delete v.skip;
+    stampDate(s.id);persist(s.id);
     const d=DATA[s.id];let nx=s.steps.findIndex((x,j)=>j>i&&!(d.steps[j]&&d.steps[j].d));
     if(nx<0)nx=s.steps.findIndex((x,j)=>!x.opt&&!(d.steps[j]&&d.steps[j].d));
     view.open=nx;view.scroll=true;renderSession();return}
   const un=e.target.closest("[data-undo]");
-  if(un){const i=+un.dataset.undo;stepData(s.id,i).d=false;DATA[s.id].finished=false;persist(s.id);renderSession();return}
+  if(un){const i=+un.dataset.undo,v=stepData(s.id,i);v.d=false;delete v.skip;DATA[s.id].finished=false;persist(s.id);renderSession();return}
   if(e.target.closest("#finish")){const d=sess(s.id);d.finished=true;stampDate(s.id);persist(s.id);goHome()}
 });
 app.addEventListener("input",e=>{
@@ -310,7 +312,7 @@ async function exportCSV(){
     const base=[s.n,DAYN[s.d],s.id,d.date||"",isDone(s)?"ja":"nein"];
     let first=true;
     s.steps.forEach((x,i)=>{const v=d.steps[i];if(!v)return;
-      rows.push(base.concat([i+1,x.key,x.name,v.d?"ja":"nein",v.kg||"",v.reps||"",xlTime(v.time),v.kmh||"",first?d.note||"":""]));first=false});
+      rows.push(base.concat([i+1,x.key,x.name,v.d?(v.skip?"ausgelassen":"ja"):"nein",v.kg||"",v.reps||"",xlTime(v.time),v.kmh||"",first?d.note||"":""]));first=false});
     if(first&&d.note)rows.push(base.concat(["","","","","","","","",d.note]));
   });
   download("hyrox-"+fileDate()+".csv","﻿"+rows.map(r=>r.map(csvCell).join(";")).join("\r\n"),"text/csv;charset=utf-8");

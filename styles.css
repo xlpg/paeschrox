@@ -87,6 +87,13 @@ th{font-family:var(--display);text-transform:uppercase;letter-spacing:.04em;font
 .last{font-size:.85rem;color:var(--muted)}
 .last b{color:var(--fg);font-weight:600}
 .okbtn{background:var(--done);color:var(--surface);border:0;border-radius:6px;padding:10px 14px;font-weight:600;font-size:1rem}
+.step.skip{background:transparent;border-style:dashed}
+.step.skip .sname b{text-decoration:line-through;color:var(--muted)}
+.step.skip .num{background:var(--muted);border-color:var(--muted);color:var(--surface)}
+.step.skip .sval{color:var(--muted)}
+.btnrow{display:flex;gap:8px}
+.btnrow .okbtn{flex:1}
+.skipbtn{background:none;border:1px solid var(--line);color:var(--muted);border-radius:6px;padding:10px 14px}
 .undo{background:none;border:1px solid var(--line);color:var(--muted);border-radius:6px;padding:8px 12px;align-self:flex-start}
 .opt{font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:.72rem;color:var(--muted);border:1px solid var(--line);border-radius:3px;padding:0 4px;margin-left:4px}
 textarea{font:inherit;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:8px 10px;width:100%;min-height:70px}
