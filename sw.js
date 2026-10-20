@@ -1,6 +1,6 @@
 // Service Worker: App offline-fähig (cache-first).
 // Bei JEDER Änderung an den App-Dateien VERSION hochzählen – sonst kommt das Update nicht an.
-const VERSION = "hyrox-v1";
+const VERSION = "hyrox-v2";
 const FONTS = "hyrox-fonts";
 const ASSETS = [
   "./", "index.html", "styles.css", "plan.js", "app.js", "manifest.webmanifest",

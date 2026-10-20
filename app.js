@@ -145,7 +145,7 @@ function renderHome(){
   if(pendingReload){location.reload();return}
   document.getElementById("watch").hidden=true;releaseWake();
   const done=SESS.filter(isDone).length, ci=curIndex(), c=SESS[ci], cd=sessDate(c), nowW=todayWeek(), race=raceDate();
-  let h=`<header><h1>Hyrox <span>12 Wochen</span></h1><p class="lead">Mo Kraft + Schlitten, Mi Laufen + Ergos, Fr Hyrox-Kombi. Jede Woche alle 8 Stationen. Tipp auf eine Einheit und arbeite sie Schritt für Schritt ab.</p></header>
+  let h=`<header><h1>Hyrox <span>12 Wochen</span></h1></header>
   <div class="progress"><div class="bar"><i style="width:${done/36*100}%"></i></div><span>${done} / 36</span></div>
   <button class="next" type="button" data-open="${c.id}"><small>${done===36?"Alles geschafft":"Nächste Einheit"}${cd?" · geplant "+WD[cd.getDay()]+" "+dm(cd):""}</small><b>Woche ${c.n} · ${DAYN[c.d]}</b><span>${DAYT[c.d]} · ${esc(WEEKS[c.n-1].t)}</span></button>
   ${race?`<p class="race">Wettkampf-Wochenende: <b>${dm(race)} / ${dmy(addDays(race,1))}</b></p>`:""}
@@ -160,15 +160,14 @@ function renderHome(){
   h+=`</div>
   <h2>Gewichte</h2>
   <div class="tbl"><table><thead><tr><th>Station</th><th>Frauen Open</th><th>Männer Open</th></tr></thead><tbody>
-  <tr><td>SkiErg</td><td>1000 m</td><td>1000 m</td></tr><tr><td>Sled Push</td><td>102 kg</td><td>152 kg</td></tr><tr><td>Sled Pull</td><td>78 kg</td><td>103 kg</td></tr>
+  <tr><td>SkiErg</td><td>1000 m</td><td>1000 m</td></tr><tr><td>Sled Push (50 m)</td><td>102 kg</td><td>152 kg</td></tr><tr><td>Sled Pull (50 m)</td><td>78 kg</td><td>103 kg</td></tr>
   <tr><td>Burpee Broad Jumps</td><td>80 m</td><td>80 m</td></tr><tr><td>Rudern</td><td>1000 m</td><td>1000 m</td></tr><tr><td>Farmer's Carry</td><td>2 × 16 kg</td><td>2 × 24 kg</td></tr>
   <tr><td>Sandbag-Lunges</td><td>10 kg</td><td>20 kg</td></tr><tr><td>Wall Balls (100)</td><td>4 kg · 2,70 m</td><td>6 kg · 3,05 m</td></tr></tbody></table></div>
-  <p class="muted small">Sled-Gewichte inkl. 50-kg-Schlitten.</p>
+  <p class="muted small">Sled-Gewichte inkl. Schlitten (28 kg). Scheiben: Push 74 / 124 kg, Pull 50 / 75 kg.</p>
   <h2>Regeln</h2>
   <ul class="rules">
    <li><strong>Kraftgewicht:</strong> so, dass alle 5 × 5 mit kurzer Pause gehen und im letzten Satz noch 1–2 Wdh. Reserve bleiben. Alle 5 Sätze mit demselben Gewicht, vorher 1–2 leichte Aufwärmsätze. Klappen alle 25 Wdh. sauber, nächstes Mal +2,5 kg.</li>
    <li><strong>Locker:</strong> ca. 8–8,5 km/h (7:00–7:30 min/km). Du kannst dich noch unterhalten, Gehpausen sind erlaubt. <strong>Renntempo:</strong> anfangs ca. 9–9,5 km/h (6:20–6:40 min/km), wird mit der Zeit schneller.</li>
-   <li><strong>Kipping Pull-ups (Mi, am Ende):</strong> Start mit 25 Wdh. insgesamt, jede Woche +2, in den Entlastungswochen weniger. Sätze frei einteilen. Zwickt die Schulter, auf strikte Klimmzüge oder Negative umsteigen.</li>
    <li>Einheit verpasst? Nicht nachholen, mit der nächsten weitermachen. Fehlt eine ganze Woche, die Woche wiederholen.</li>
    <li>Wochen 4 und 8 sind bewusst leichter. Nicht überspringen.</li>
    <li>Ziehen oder Stechen in Knie, Achillessehne oder Wade: Laufumfang zurücknehmen, nicht durchbeißen.</li>
