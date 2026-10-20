@@ -8,40 +8,40 @@ const st=(key,name,detail,f,o={})=>Object.assign({key,name,detail,f},o);
 const T=["time"],KT=["kg","time"],KR=["kg","reps"];
 
 const WEEKS=[
- {p:1,t:"Reinkommen",k:"5×5",lift:"Kreuzheben",push:"4 × 25 m · 102 kg · 2 min Pause",pull:"4 × 25 m · 78 kg · 2 min Pause",
+ {p:1,t:"Reinkommen",k:"5×5",lift:"Kreuzheben",push:"10 × 10 m · 102 kg · 60–90 s Pause",pull:"10 × 10 m · 78 kg · 60–90 s Pause",
   mi:{pu:25,easy:25,erg:2,ergLen:500,note:"ruhig, 2 min Pause"},
   fr:{run:"1 km",bbj:20,carry:100,lunge:25,wb:25,w:"f"}},
- {p:1,t:"Mehr Volumen",k:"5×5",lift:"Lunges",push:"5 × 25 m · 102 kg",pull:"5 × 25 m · 78 kg",
+ {p:1,t:"Mehr Volumen",k:"5×5",lift:"Lunges",push:"12 × 10 m · 102 kg",pull:"12 × 10 m · 78 kg",
   mi:{pu:27,easy:30,erg:3,ergLen:500,note:"90 s Pause"},
   fr:{run:"1 km",bbj:30,carry:150,lunge:40,wb:30,w:"f"}},
- {p:1,t:"Stationen länger",k:"5×5",lift:"Kreuzheben",push:"5 × 25 m · 102 kg · nur 90 s Pause",pull:"5 × 25 m · 78 kg · nur 90 s Pause",
+ {p:1,t:"Stationen länger",k:"5×5",lift:"Kreuzheben",push:"12 × 10 m · 102 kg · nur 45–60 s Pause",pull:"12 × 10 m · 78 kg · nur 45–60 s Pause",
   mi:{pu:29,easy:35,erg:3,ergLen:500,note:"zügig, 90 s Pause"},
   fr:{run:"1 km",bbj:40,carry:200,lunge:50,wb:50,w:"f"}},
- {p:1,t:"Entlastung",k:"3×5",lift:"Lunges",push:"3 × 25 m · 102 kg",pull:"3 × 25 m · 78 kg",
+ {p:1,t:"Entlastung",k:"3×5",lift:"Lunges",push:"8 × 10 m · 102 kg",pull:"8 × 10 m · 78 kg",
   mi:{pu:25,easy:25,erg:1,ergLen:1000,note:"locker, auf Technik achten"},
   fr:{run:"500 m",bbj:20,carry:100,lunge:25,wb:25,w:"f"}},
- {p:2,t:"Männergewichte",k:"5×5",lift:"Kreuzheben",push:"4 × 25 m · 152 kg (bei Bedarf runter)",pull:"4 × 25 m · 103 kg",
+ {p:2,t:"Männergewichte",k:"5×5",lift:"Kreuzheben",push:"10 × 10 m · 152 kg (bei Bedarf runter)",pull:"10 × 10 m · 103 kg",
   mi:{pu:31,int:4,pause:"2 min"},
   fr:{sim:"half",w:"f"}},
- {p:2,t:"Aufbau",k:"5×5",lift:"Lunges",push:"5 × 25 m · 152 kg",pull:"5 × 25 m · 103 kg",
+ {p:2,t:"Aufbau",k:"5×5",lift:"Lunges",push:"12 × 10 m · 152 kg",pull:"12 × 10 m · 103 kg",
   mi:{pu:33,int:5,pause:"2 min"},
   fr:{run:"1 km",bbj:40,carry:200,lunge:50,wb:50,w:"m"}},
- {p:2,t:"Volumen",k:"5×5",lift:"Kreuzheben",push:"3 × 50 m · 152 kg",pull:"3 × 50 m · 103 kg",
+ {p:2,t:"Volumen",k:"5×5",lift:"Kreuzheben",push:"3 × 5 Bahnen am Stück · 152 kg",pull:"3 × 5 Bahnen am Stück · 103 kg",
   mi:{pu:35,int:6,pause:"2 min"},
   fr:{run:"1 km",bbj:60,carry:200,lunge:75,wb:75,w:"m"}},
- {p:2,t:"Entlastung + Test",k:"3×5",lift:"Lunges",push:"3 × 25 m · 152 kg",pull:"3 × 25 m · 103 kg",
+ {p:2,t:"Entlastung + Test",k:"3×5",lift:"Lunges",push:"8 × 10 m · 152 kg",pull:"8 × 10 m · 103 kg",
   mi:{pu:29,easy:30,erg:1,ergLen:1000,note:"locker"},
   fr:{sim:"half",w:"m",cmp:true}},
- {p:3,t:"Generalprobe",k:"5×5",lift:"Kreuzheben",push:"4 × 25 m · 152 kg, nach jeder Bahn 200 m zügig auf dem Band",pull:"4 × 25 m · 103 kg, nach jeder Bahn 200 m zügig auf dem Band",
+ {p:3,t:"Generalprobe",k:"5×5",lift:"Kreuzheben",push:"4 × (3 × 10 m · 152 kg + 200 m zügig auf dem Band)",pull:"4 × (3 × 10 m · 103 kg + 200 m zügig auf dem Band)",
   mi:{pu:37,easy:30,erg:2,ergLen:500,note:"locker"},
   fr:{sim:"full",w:"m"}},
- {p:3,t:"Renntempo festigen",k:"5×5",lift:"Lunges",push:"2 × (50 m · 152 kg + 400 m Laufen)",pull:"2 × (50 m · 103 kg + 400 m Laufen)",
+ {p:3,t:"Renntempo festigen",k:"5×5",lift:"Lunges",push:"2 × (5 Bahnen am Stück · 152 kg + 400 m Laufen)",pull:"2 × (5 Bahnen am Stück · 103 kg + 400 m Laufen)",
   mi:{pu:39,int:6,pause:"90 s"},
   fr:{run:"1 km Renntempo",bbj:80,carry:200,lunge:100,wb:100,w:"m"}},
- {p:3,t:"Scharf, aber kürzer",k:"3×5",lift:"Kreuzheben",push:"3 × 25 m · 152 kg",pull:"3 × 25 m · 103 kg",
+ {p:3,t:"Scharf, aber kürzer",k:"3×5",lift:"Kreuzheben",push:"8 × 10 m · 152 kg",pull:"8 × 10 m · 103 kg",
   mi:{pu:39,int:4,pause:"90 s"},
   fr:{run:"1 km Renntempo",bbj:40,carry:100,lunge:50,wb:50,w:"m"}},
- {p:4,t:"Wettkampfwoche",k:"3×5 locker",lift:null,push:"2 × 25 m · 152 kg, nur eingewöhnen",pull:"2 × 25 m · 103 kg, nur eingewöhnen",
+ {p:4,t:"Wettkampfwoche",k:"3×5 locker",lift:null,push:"5 × 10 m · 152 kg, nur eingewöhnen",pull:"5 × 10 m · 103 kg, nur eingewöhnen",
   mi:{pu:20,taper:true},
   fr:{taper:true}}
 ];
@@ -111,7 +111,7 @@ function buildFr(f){
   const w=WT[f.w];
   if(f.sim){
     const h=f.sim==="half", run=h?"500 m":"1 km";
-    const ST=[["sim-ski","SkiErg",h?"500 m":"1000 m",""],["sim-push","Sled Push",h?"25 m":"50 m",w.push],["sim-pull","Sled Pull",h?"25 m":"50 m",w.pull],
+    const ST=[["sim-ski","SkiErg",h?"500 m":"1000 m",""],["sim-push","Sled Push",h?"3 × 10 m":"5 × 10 m",w.push],["sim-pull","Sled Pull",h?"3 × 10 m":"5 × 10 m",w.pull],
       ["sim-bbj","Burpee Broad Jumps",h?"40 m":"80 m",""],["sim-row","Rudern",h?"500 m":"1000 m",""],["sim-carry","Farmer's Carry",h?"100 m":"200 m",w.carry],
       ["sim-lunge","Sandbag-Lunges",h?"50 m":"100 m",w.lunge],["sim-wb","Wall Balls",h?"50":"100",w.wb]];
     ST.forEach(([k,n,d,kg],i)=>{
